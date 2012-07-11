@@ -22,7 +22,7 @@ h3. Adding a refresh control to your table view
 ODRefreshControl *refreshControl = [[ODRefreshControl alloc] initInScrollView:self.scrollView];
 </pre>
 
-To know when the refresh operation has started, add and action method to the UIControlEventValueChanged event of the control
+To know when the refresh operation has started, add an action method to the UIControlEventValueChanged event of the control
 
 <pre>
 [refreshControl addTarget:self action:@selector(dropViewDidBeginRefreshing:) forControlEvents:UIControlEventValueChanged];
