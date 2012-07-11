@@ -44,7 +44,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     return a + (b - a) * p;
 }
 
-- (id)initInScrollView:(UIscrollView *)scrollView
+- (id)initInScrollView:(UIScrollView *)scrollView
 {
     self = [super initWithFrame:CGRectMake(0, -kTotalViewHeight, scrollView.frame.size.width, kTotalViewHeight)];
     if (self) {
