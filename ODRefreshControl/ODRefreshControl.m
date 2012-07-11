@@ -28,7 +28,7 @@
 
 @interface ODRefreshControl ()
 
-@property (nonatomic, assign) UITableView *tableView;
+@property (nonatomic, assign) UIScrollView *scrollView;
 
 @end
 
@@ -37,22 +37,22 @@
 @synthesize refreshing = _refreshing;
 @synthesize tintColor = _tintColor;
 
-@synthesize tableView = _tableView;
+@synthesize scrollView = _scrollView;
 
 static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
     return a + (b - a) * p;
 }
 
-- (id)initInTableView:(UITableView *)tableView
+- (id)initInScrollView:(UIscrollView *)scrollView
 {
-    self = [super initWithFrame:CGRectMake(0, -kTotalViewHeight, tableView.frame.size.width, kTotalViewHeight)];
+    self = [super initWithFrame:CGRectMake(0, -kTotalViewHeight, scrollView.frame.size.width, kTotalViewHeight)];
     if (self) {
-        self.tableView = tableView;
+        self.scrollView = scrollView;
         
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [tableView addSubview:self];
-        [tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
+        [scrollView addSubview:self];
+        [scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
         
         _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         _activity.center = CGPointMake(floor(self.frame.size.width / 2), floor(self.frame.size.height / 2));
@@ -90,7 +90,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)dealloc
 {
-    self.tableView = nil;
+    self.scrollView = nil;
 }
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -115,8 +115,8 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _activity.center = CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2));
             
             // Set the inset only when bouncing back and not dragging
-            if (offset >= -kOpenedViewHeight && !self.tableView.dragging) {
-                [self.tableView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+            if (offset >= -kOpenedViewHeight && !self.scrollView.dragging) {
+                [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
             }
         }
         return;
@@ -288,7 +288,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
         } completion:nil];
         [UIView animateWithDuration:0.4 animations:^{
-            [self.tableView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+            [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
         }];
         
         _refreshing = YES;
@@ -300,7 +300,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
     _refreshing = NO;
     [UIView animateWithDuration:0.4 animations:^{
-        [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+        [self.scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         _activity.alpha = 0;
         _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
     } completion:^(BOOL finished) {

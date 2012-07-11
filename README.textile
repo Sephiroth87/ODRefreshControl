@@ -4,7 +4,7 @@ h1. ODRefreshControl
 
 !http://www.orangeinaday.com/img/ODRefreshControl.jpg!
 
-ODRefreshControl is a "pull down to refresh" control for UITableView, like the one Apple introduced in iOS6, but available to anyone from iOS4 and up.
+ODRefreshControl is a "pull down to refresh" control for UIScrollView, like the one Apple introduced in iOS6, but available to anyone from iOS4 and up.
 
 h2. Installation
 
@@ -19,7 +19,7 @@ h2. Usage
 h3. Adding a refresh control to your table view
 
 <pre>
-ODRefreshControl *refreshControl = [[ODRefreshControl alloc] initInTableView:self.tableView];
+ODRefreshControl *refreshControl = [[ODRefreshControl alloc] initInScrollView:self.scrollView];
 </pre>
 
 To know when the refresh operation has started, add and action method to the UIControlEventValueChanged event of the control
