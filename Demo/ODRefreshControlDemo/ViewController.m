@@ -15,7 +15,7 @@
 {
     [super viewDidLoad];
     
-    ODRefreshControl *refreshControl = [[ODRefreshControl alloc] initInTableView:self.tableView];
+    ODRefreshControl *refreshControl = [[ODRefreshControl alloc] initInScrollView:self.tableView];
     [refreshControl addTarget:self action:@selector(dropViewDidBeginRefreshing:) forControlEvents:UIControlEventValueChanged];
 }
 

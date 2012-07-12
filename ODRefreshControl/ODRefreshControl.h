@@ -23,7 +23,7 @@
 @property (nonatomic, readonly) BOOL refreshing;
 @property (nonatomic, strong) UIColor *tintColor;
 
-- (id)initInTableView:(UITableView *)tableView;
+- (id)initInScrollView:(UIScrollView *)scrollView;
 
 // Tells the control that a refresh operation was started programmatically
 - (void)beginRefreshing;
