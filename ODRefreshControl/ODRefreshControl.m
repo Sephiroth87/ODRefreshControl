@@ -28,7 +28,7 @@
 
 @interface ODRefreshControl ()
 
-@property (nonatomic, assign) UIScrollView *scrollView;
+@property (nonatomic, weak) UIScrollView *scrollView;
 
 @end
 
@@ -91,7 +91,6 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 - (void)dealloc
 {
     [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
-    self.scrollView = nil;
 }
 
 - (void)setTintColor:(UIColor *)tintColor
