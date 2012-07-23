@@ -26,18 +26,12 @@
 #define kMaxArrowRadius     7
 #define kMaxDistance        53
 
-@interface ODRefreshControl ()
-
-@property (nonatomic, weak) UIScrollView *scrollView;
-
-@end
-
-@implementation ODRefreshControl
+@implementation ODRefreshControl {
+    UIScrollView *_scrollView;
+}
 
 @synthesize refreshing = _refreshing;
 @synthesize tintColor = _tintColor;
-
-@synthesize scrollView = _scrollView;
 
 static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
@@ -48,7 +42,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
     self = [super initWithFrame:CGRectMake(0, -kTotalViewHeight, scrollView.frame.size.width, kTotalViewHeight)];
     if (self) {
-        self.scrollView = scrollView;
+        _scrollView = scrollView;
         
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [scrollView addSubview:self];
@@ -90,7 +84,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)dealloc
 {
-    [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
+    [_scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
 }
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -115,8 +109,8 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _activity.center = CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2));
             
             // Set the inset only when bouncing back and not dragging
-            if (offset >= -kOpenedViewHeight && !self.scrollView.dragging) {
-                [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+            if (offset >= -kOpenedViewHeight && !_scrollView.dragging) {
+                [_scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
             }
         }
         return;
@@ -288,7 +282,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
         } completion:nil];
         [UIView animateWithDuration:0.4 animations:^{
-            [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+            [_scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
         }];
         
         _refreshing = YES;
@@ -300,7 +294,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
     _refreshing = NO;
     [UIView animateWithDuration:0.4 animations:^{
-        [self.scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         _activity.alpha = 0;
         _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
     } completion:^(BOOL finished) {
