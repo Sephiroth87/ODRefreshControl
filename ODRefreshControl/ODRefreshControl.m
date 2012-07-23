@@ -67,8 +67,6 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         _shapeLayer.shadowOffset = CGSizeMake(0, 1);
         _shapeLayer.shadowOpacity = 0.4;
         _shapeLayer.shadowRadius = 0.5;
-        _shapeLayer.shouldRasterize = YES;
-        _shapeLayer.rasterizationScale = [UIScreen mainScreen].scale;
         [self.layer addSublayer:_shapeLayer];
         
         _arrowLayer = [CAShapeLayer layer];
