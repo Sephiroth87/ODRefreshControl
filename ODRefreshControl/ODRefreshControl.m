@@ -300,8 +300,13 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 - (void)endRefreshing
 {
     _refreshing = NO;
+    // Create a temporary retain-cycle, so the scrollView won't be released
+    // halfway through the end animation.
+    // This allows for the refresh control to clean up the observer,
+    // in the case the scrollView is released while the animation is running
+    __block UIScrollView *blockScrollView = self.scrollView;
     [UIView animateWithDuration:0.4 animations:^{
-        [self.scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+        [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         _activity.alpha = 0;
         _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
     } completion:^(BOOL finished) {
@@ -313,6 +318,9 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         _arrowLayer.path = nil;
         [_highlightLayer removeAllAnimations];
         _highlightLayer.path = nil;
+        // We need to use the scrollView somehow in the end block,
+        // or it'll get released in the animation block.
+        [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
     }];
 }
 
