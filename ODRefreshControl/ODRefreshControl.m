@@ -26,12 +26,18 @@
 #define kMaxArrowRadius     7
 #define kMaxDistance        53
 
-@implementation ODRefreshControl {
-    UIScrollView *_scrollView;
-}
+@interface ODRefreshControl ()
+
+@property (nonatomic, assign) UIScrollView *scrollView;
+
+@end
+
+@implementation ODRefreshControl
 
 @synthesize refreshing = _refreshing;
 @synthesize tintColor = _tintColor;
+
+@synthesize scrollView = _scrollView;
 
 static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
@@ -42,7 +48,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
     self = [super initWithFrame:CGRectMake(0, -kTotalViewHeight, scrollView.frame.size.width, kTotalViewHeight)];
     if (self) {
-        _scrollView = scrollView;
+        self.scrollView = scrollView;
         
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [scrollView addSubview:self];
@@ -84,7 +90,8 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)dealloc
 {
-    [_scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
+    [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
+    self.scrollView = nil;
 }
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -109,8 +116,8 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _activity.center = CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2));
             
             // Set the inset only when bouncing back and not dragging
-            if (offset >= -kOpenedViewHeight && !_scrollView.dragging) {
-                [_scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+            if (offset >= -kOpenedViewHeight && !self.scrollView.dragging) {
+                [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
             }
         }
         return;
@@ -282,7 +289,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
         } completion:nil];
         [UIView animateWithDuration:0.4 animations:^{
-            [_scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+            [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
         }];
         
         _refreshing = YES;
@@ -293,8 +300,13 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 - (void)endRefreshing
 {
     _refreshing = NO;
+    // Create a temporary retain-cycle, so the scrollView won't be released
+    // halfway through the end animation.
+    // This allows for the refresh control to clean up the observer,
+    // in the case the scrollView is released while the animation is running
+    __block UIScrollView *blockScrollView = self.scrollView;
     [UIView animateWithDuration:0.4 animations:^{
-        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+        [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         _activity.alpha = 0;
         _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
     } completion:^(BOOL finished) {
@@ -306,6 +318,9 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         _arrowLayer.path = nil;
         [_highlightLayer removeAllAnimations];
         _highlightLayer.path = nil;
+        // We need to use the scrollView somehow in the end block,
+        // or it'll get released in the animation block.
+        [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
     }];
 }
 
