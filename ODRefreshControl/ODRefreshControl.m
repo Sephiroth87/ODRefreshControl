@@ -100,6 +100,16 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     _shapeLayer.fillColor = [_tintColor CGColor];
 }
 
+- (void)setActivityIndicatorViewStyle:(UIActivityIndicatorViewStyle)activityIndicatorViewStyle
+{
+    _activity.activityIndicatorViewStyle = activityIndicatorViewStyle;
+}
+
+- (UIActivityIndicatorViewStyle)activityIndicatorViewStyle
+{
+    return _activity.activityIndicatorViewStyle;
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     CGFloat offset = [[change objectForKey:@"new"] CGPointValue].y;

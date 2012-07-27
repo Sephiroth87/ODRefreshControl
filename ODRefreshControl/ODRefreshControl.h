@@ -22,6 +22,7 @@
 
 @property (nonatomic, readonly) BOOL refreshing;
 @property (nonatomic, strong) UIColor *tintColor;
+@property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 
 - (id)initInScrollView:(UIScrollView *)scrollView;
 
