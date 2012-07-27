@@ -1,0 +1,9 @@
+# OS X folder attributes
+.DS_Store
+
+# user-specific XCode stuff
+*.mode1v3
+*.mode2v3
+*.pbxuser
+*.perspectivev3
+*.xcuserdatad
