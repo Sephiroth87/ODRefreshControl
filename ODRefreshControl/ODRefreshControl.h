@@ -11,20 +11,16 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface ODRefreshControl : UIControl {
-    CAShapeLayer *_shapeLayer;
-    CAShapeLayer *_arrowLayer;
-    CAShapeLayer *_highlightLayer;
-    UIActivityIndicatorView *_activity;
-    BOOL _refreshing;
-    BOOL _canRefresh;
-}
+@interface ODRefreshControl : UIControl
 
 @property (nonatomic, readonly) BOOL refreshing;
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 
 - (id)initInScrollView:(UIScrollView *)scrollView;
+
+// use custom activity indicator
+- (id)initInScrollView:(UIScrollView *)scrollView withActivityIndicator:(id)activity;
 
 // Tells the control that a refresh operation was started programmatically
 - (void)beginRefreshing;
