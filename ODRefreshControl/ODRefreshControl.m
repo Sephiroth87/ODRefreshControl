@@ -90,7 +90,11 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)dealloc
 {
-    [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
+    if ([self.scrollView respondsToSelector:@selector(removeObserver:forKeyPath:context:)]) {
+        [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
+    } else {
+        [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
+    }
     self.scrollView = nil;
 }
 
