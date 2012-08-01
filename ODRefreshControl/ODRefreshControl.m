@@ -139,6 +139,10 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             } else {
                 return;
             }
+        } else {
+            if (offset >= 0) {
+                return;
+            }
         }
     }
     
