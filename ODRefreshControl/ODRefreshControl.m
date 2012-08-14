@@ -100,7 +100,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)dealloc
 {
-    [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
+    [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
     self.scrollView = nil;
 }
 
@@ -150,6 +150,10 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             if (offset >= 0) {
                 _canRefresh = YES;
             } else {
+                return;
+            }
+        } else {
+            if (offset >= 0) {
                 return;
             }
         }
