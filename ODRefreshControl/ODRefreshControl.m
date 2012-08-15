@@ -94,6 +94,15 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     self.scrollView = nil;
 }
 
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    if (!newSuperview) {
+        [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
+        self.scrollView = nil;
+    }
+}
+
 - (void)setTintColor:(UIColor *)tintColor
 {
     _tintColor = tintColor;
