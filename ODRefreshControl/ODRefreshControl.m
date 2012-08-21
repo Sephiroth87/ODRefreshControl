@@ -127,8 +127,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (!self.enabled)
-    {
+    if (!self.enabled) {
         return;
     }
     
@@ -314,17 +313,12 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [_arrowLayer addAnimation:alphaAnimation forKey:nil];
         [_highlightLayer addAnimation:alphaAnimation forKey:nil];
         
-        [CATransaction begin];
-        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
-        _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
-        [CATransaction commit];
-        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-            _activity.alpha = 1;
-            _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
-        } completion:nil];
-        [UIView animateWithDuration:0.4 animations:^{
-            [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
-        }];
+        _activity.alpha = 1;
+        _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
+
+        CGPoint offset = self.scrollView.contentOffset;
+        [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+        [self.scrollView setContentOffset:offset animated:NO];
         
         _refreshing = YES;
         _canRefresh = NO;
