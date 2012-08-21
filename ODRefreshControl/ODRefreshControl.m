@@ -315,7 +315,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         
         _activity.alpha = 1;
         _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
-
+        
         CGPoint offset = self.scrollView.contentOffset;
         [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
         [self.scrollView setContentOffset:offset animated:NO];
@@ -327,29 +327,31 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)endRefreshing
 {
-    _refreshing = NO;
-    // Create a temporary retain-cycle, so the scrollView won't be released
-    // halfway through the end animation.
-    // This allows for the refresh control to clean up the observer,
-    // in the case the scrollView is released while the animation is running
-    __block UIScrollView *blockScrollView = self.scrollView;
-    [UIView animateWithDuration:0.4 animations:^{
-        [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
-        _activity.alpha = 0;
-        _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
-    } completion:^(BOOL finished) {
-        [_shapeLayer removeAllAnimations];
-        _shapeLayer.path = nil;
-        _shapeLayer.shadowPath = nil;
-        _shapeLayer.position = CGPointZero;
-        [_arrowLayer removeAllAnimations];
-        _arrowLayer.path = nil;
-        [_highlightLayer removeAllAnimations];
-        _highlightLayer.path = nil;
-        // We need to use the scrollView somehow in the end block,
-        // or it'll get released in the animation block.
-        [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
-    }];
+    if (_refreshing) {
+        _refreshing = NO;
+        // Create a temporary retain-cycle, so the scrollView won't be released
+        // halfway through the end animation.
+        // This allows for the refresh control to clean up the observer,
+        // in the case the scrollView is released while the animation is running
+        __block UIScrollView *blockScrollView = self.scrollView;
+        [UIView animateWithDuration:0.4 animations:^{
+            [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+            _activity.alpha = 0;
+            _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
+        } completion:^(BOOL finished) {
+            [_shapeLayer removeAllAnimations];
+            _shapeLayer.path = nil;
+            _shapeLayer.shadowPath = nil;
+            _shapeLayer.position = CGPointZero;
+            [_arrowLayer removeAllAnimations];
+            _arrowLayer.path = nil;
+            [_highlightLayer removeAllAnimations];
+            _highlightLayer.path = nil;
+            // We need to use the scrollView somehow in the end block,
+            // or it'll get released in the animation block.
+            [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+        }];
+    }
 }
 
 @end
