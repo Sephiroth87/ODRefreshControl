@@ -101,6 +101,15 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     _shapeLayer.hidden = !self.enabled;
 }
 
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    if (!newSuperview) {
+        [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
+        self.scrollView = nil;
+    }
+}
+
 - (void)setTintColor:(UIColor *)tintColor
 {
     _tintColor = tintColor;
