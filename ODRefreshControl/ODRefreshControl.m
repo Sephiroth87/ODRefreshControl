@@ -73,7 +73,6 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         _shapeLayer.shadowOffset = CGSizeMake(0, 1);
         _shapeLayer.shadowOpacity = 0.4;
         _shapeLayer.shadowRadius = 0.5;
-        _shapeLayer.hidden = !self.enabled;
         [self.layer addSublayer:_shapeLayer];
         
         _arrowLayer = [CAShapeLayer layer];
@@ -91,7 +90,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)dealloc
 {
-    [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
+    [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
     self.scrollView = nil;
 }
 
@@ -158,6 +157,10 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             if (offset >= 0) {
                 _canRefresh = YES;
             } else {
+                return;
+            }
+        } else {
+            if (offset >= 0) {
                 return;
             }
         }
