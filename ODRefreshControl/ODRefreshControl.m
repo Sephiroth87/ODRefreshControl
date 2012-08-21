@@ -28,6 +28,7 @@
 
 @interface ODRefreshControl ()
 
+@property (nonatomic, readwrite) BOOL refreshing;
 @property (nonatomic, assign) UIScrollView *scrollView;
 
 @end
@@ -293,7 +294,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
         } completion:nil];
         
-        _refreshing = YES;
+        self.refreshing = YES;
         _canRefresh = NO;
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
@@ -320,7 +321,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
         [self.scrollView setContentOffset:offset animated:NO];
         
-        _refreshing = YES;
+        self.refreshing = YES;
         _canRefresh = NO;
     }
 }
@@ -328,7 +329,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 - (void)endRefreshing
 {
     if (_refreshing) {
-        _refreshing = NO;
+        self.refreshing = NO;
         // Create a temporary retain-cycle, so the scrollView won't be released
         // halfway through the end animation.
         // This allows for the refresh control to clean up the observer,
