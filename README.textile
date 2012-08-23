@@ -48,6 +48,7 @@ The @ODRefreshControl@ can be customized using the following properties:
 
 <pre>
 @property (nonatomic, strong) UIColor *tintColor;
+@property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 </pre>
 
 h2. Credits

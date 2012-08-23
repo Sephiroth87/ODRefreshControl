@@ -104,6 +104,21 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     self.scrollView = nil;
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    super.enabled = enabled;
+    _shapeLayer.hidden = !self.enabled;
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    if (!newSuperview) {
+        [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
+        self.scrollView = nil;
+    }
+}
+
 - (void)setTintColor:(UIColor *)tintColor
 {
     _tintColor = tintColor;
@@ -126,6 +141,10 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    if (!self.enabled) {
+        return;
+    }
+    
     CGFloat offset = [[change objectForKey:@"new"] CGPointValue].y;
     
     if (_refreshing) {
@@ -308,19 +327,13 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [_arrowLayer addAnimation:alphaAnimation forKey:nil];
         [_highlightLayer addAnimation:alphaAnimation forKey:nil];
         
-        [CATransaction begin];
-        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
-        [_activity layer].transform = CATransform3DMakeScale(0.1, 0.1, 1);
-        [CATransaction commit];
-        [_activity startAnimating];
-        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-            [_activity setAlpha:1];
-            [_activity layer].transform = CATransform3DMakeScale(1, 1, 1);
-        } completion:nil];
-        [UIView animateWithDuration:0.4 animations:^{
-            [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
-        }];
-        
+        [_activity setAlpha:1];
+        [_activity layer].transform = CATransform3DMakeScale(1, 1, 1);
+
+        CGPoint offset = self.scrollView.contentOffset;
+        [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+        [self.scrollView setContentOffset:offset animated:NO];
+
         _refreshing = YES;
         _canRefresh = NO;
     }
@@ -328,30 +341,31 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)endRefreshing
 {
-    _refreshing = NO;
-    // Create a temporary retain-cycle, so the scrollView won't be released
-    // halfway through the end animation.
-    // This allows for the refresh control to clean up the observer,
-    // in the case the scrollView is released while the animation is running
-    __block UIScrollView *blockScrollView = self.scrollView;
-    [UIView animateWithDuration:0.4 animations:^{
-        [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
-        [_activity setAlpha:0];
-        [_activity layer].transform = CATransform3DMakeScale(0.1, 0.1, 1);
-    } completion:^(BOOL finished) {
-        [_activity stopAnimating];
-        [_shapeLayer removeAllAnimations];
-        _shapeLayer.path = nil;
-        _shapeLayer.shadowPath = nil;
-        _shapeLayer.position = CGPointZero;
-        [_arrowLayer removeAllAnimations];
-        _arrowLayer.path = nil;
-        [_highlightLayer removeAllAnimations];
-        _highlightLayer.path = nil;
-        // We need to use the scrollView somehow in the end block,
-        // or it'll get released in the animation block.
-        [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
-    }];
+    if (_refreshing) {
+        _refreshing = NO;
+        // Create a temporary retain-cycle, so the scrollView won't be released
+        // halfway through the end animation.
+        // This allows for the refresh control to clean up the observer,
+        // in the case the scrollView is released while the animation is running
+        __block UIScrollView *blockScrollView = self.scrollView;
+        [UIView animateWithDuration:0.4 animations:^{
+            [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+            [_activity setAlpha:0];
+            [_activity layer].transform = CATransform3DMakeScale(0.1, 0.1, 1);
+        } completion:^(BOOL finished) {
+            [_shapeLayer removeAllAnimations];
+            _shapeLayer.path = nil;
+            _shapeLayer.shadowPath = nil;
+            _shapeLayer.position = CGPointZero;
+            [_arrowLayer removeAllAnimations];
+            _arrowLayer.path = nil;
+            [_highlightLayer removeAllAnimations];
+            _highlightLayer.path = nil;
+            // We need to use the scrollView somehow in the end block,
+            // or it'll get released in the animation block.
+            [blockScrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+        }];
+    }
 }
 
 @end
