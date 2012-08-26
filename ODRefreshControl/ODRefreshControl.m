@@ -140,7 +140,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     }
     
     CGFloat offset = [[change objectForKey:@"new"] CGPointValue].y + self.scrollView.contentInset.top;
-
+    
     CGFloat alpha = 1.0f;
     if ( !_refreshing )
         alpha = ( offset >= 0 ? 0 : ABS(offset)/kOpenedViewHeight);
@@ -159,7 +159,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             
             // Set the inset only when bouncing back and not dragging
             if (offset >= -kOpenedViewHeight && !self.scrollView.dragging) {
-                [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+                [self.scrollView setContentInset:self.openedInsets];
             }
         }
         return;
