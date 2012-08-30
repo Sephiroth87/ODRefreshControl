@@ -159,8 +159,12 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             [_activity setCenter:CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2))];
             
             // Set the inset only when bouncing back and not dragging
-            if (offset >= -kOpenedViewHeight && !self.scrollView.dragging) {
-                [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+            if (offset < 0) {
+                if (offset >= -kOpenedViewHeight && !self.scrollView.dragging) {
+                    [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight, 0, 0, 0)];
+                }
+            } else {
+                [self.scrollView setContentInset:UIEdgeInsetsZero];
             }
         }
         return;
