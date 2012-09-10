@@ -67,13 +67,14 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [_activity setCenter:CGPointMake(floor(self.frame.size.width / 2), floor(self.frame.size.height / 2))];
         [_activity setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
         [_activity setAlpha:0];
-//        [_activity startAnimating];
         [self addSubview:_activity];
         
         _refreshing = NO;
         _canRefresh = YES;
         _ignoreInset = NO;
         _ignoreOffset = NO;
+        _didSetInset = NO;
+        _hasSectionHeaders = NO;
         _tintColor = [UIColor colorWithRed:155.0 / 255.0 green:162.0 / 255.0 blue:172.0 / 255.0 alpha:1.0];
         
         _shapeLayer = [CAShapeLayer layer];
@@ -155,7 +156,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     if (!self.enabled || _ignoreOffset) {
         return;
     }
-    
+
     CGFloat offset = [[change objectForKey:@"new"] CGPointValue].y + self.originalContentInset.top;
     
     if (_refreshing) {
@@ -166,16 +167,40 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
             _shapeLayer.position = CGPointMake(0, kMaxDistance + offset + kOpenedViewHeight);
             [CATransaction commit];
+
             [_activity setCenter:CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2))];
 
-            // Set the inset only when bouncing back and not dragging
-            if (offset >= -kOpenedViewHeight && !self.scrollView.dragging) {
-                _ignoreInset = YES;
-                _ignoreOffset = YES;
-                [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
-                _ignoreInset = NO;
-                _ignoreOffset = NO;
+            _ignoreInset = YES;
+            _ignoreOffset = YES;
+            
+            if (offset < 0) {
+                // Set the inset depending on the situation
+                if (offset >= -kOpenedViewHeight) {
+                    if (!self.scrollView.dragging) {
+                        if (!_didSetInset) {
+                            _didSetInset = YES;
+                            _hasSectionHeaders = NO;
+                            for (int i = 0; i < [(UITableView *)self.scrollView numberOfSections]; ++i) {
+                                if ([(UITableView *)self.scrollView rectForHeaderInSection:i].size.height) {
+                                    _hasSectionHeaders = YES;
+                                    break;
+                                }
+                            }
+                        }
+                        if (_hasSectionHeaders) {
+                            [self.scrollView setContentInset:UIEdgeInsetsMake(MIN(-offset, kOpenedViewHeight) + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
+                        } else {
+                            [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
+                        }
+                    } else if (_didSetInset && _hasSectionHeaders) {
+                        [self.scrollView setContentInset:UIEdgeInsetsMake(-offset, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
+                    }
+                }
+            } else if (_hasSectionHeaders) {
+                [self.scrollView setContentInset:self.originalContentInset];
             }
+            _ignoreInset = NO;
+            _ignoreOffset = NO;
         }
         return;
     } else {
@@ -183,6 +208,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         if (!_canRefresh) {
             if (offset >= 0) {
                 _canRefresh = YES;
+                _didSetInset = NO;
             } else {
                 return;
             }

@@ -20,6 +20,8 @@
     BOOL _canRefresh;
     BOOL _ignoreInset;
     BOOL _ignoreOffset;
+    BOOL _didSetInset;
+    BOOL _hasSectionHeaders;
 }
 
 @property (nonatomic, readonly) BOOL refreshing;
