@@ -18,6 +18,8 @@
     id _activity;
     BOOL _refreshing;
     BOOL _canRefresh;
+    BOOL _ignoreInset;
+    BOOL _ignoreOffset;
 }
 
 @property (nonatomic, readonly) BOOL refreshing;
