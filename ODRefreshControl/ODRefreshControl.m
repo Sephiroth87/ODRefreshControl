@@ -193,7 +193,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
                             [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
                         }
                     } else if (_didSetInset && _hasSectionHeaders) {
-                        [self.scrollView setContentInset:UIEdgeInsetsMake(-offset, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
+                        [self.scrollView setContentInset:UIEdgeInsetsMake(-offset + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
                     }
                 }
             } else if (_hasSectionHeaders) {
@@ -395,8 +395,6 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _ignoreInset = YES;
             [blockScrollView setContentInset:self.originalContentInset];
             _ignoreInset = NO;
-            CGPoint offset = blockScrollView.contentOffset;
-            [blockScrollView setContentOffset:offset animated:NO];
             [_activity setAlpha:0];
             [_activity layer].transform = CATransform3DMakeScale(0.1, 0.1, 1);
         } completion:^(BOOL finished) {
