@@ -186,7 +186,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
                             [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
                         }
                     } else if (_didSetInset && _hasSectionHeaders) {
-                        [self.scrollView setContentInset:UIEdgeInsetsMake(-offset, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
+                        [self.scrollView setContentInset:UIEdgeInsetsMake(-offset + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
                     }
                 }
             } else if (_hasSectionHeaders) {
