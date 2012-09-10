@@ -11,7 +11,14 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface ODRefreshControl : UIControl
+@interface ODRefreshControl : UIControl {
+    CAShapeLayer *_shapeLayer;
+    CAShapeLayer *_arrowLayer;
+    CAShapeLayer *_highlightLayer;
+    id _activity;
+    BOOL _refreshing;
+    BOOL _canRefresh;
+}
 
 @property (nonatomic, readonly) BOOL refreshing;
 @property (nonatomic, strong) UIColor *tintColor;

@@ -33,15 +33,7 @@
 
 @end
 
-@implementation ODRefreshControl {
-  CAShapeLayer *_shapeLayer;
-  CAShapeLayer *_arrowLayer;
-  CAShapeLayer *_highlightLayer;
-  id _activity;
-  BOOL _refreshing;
-  BOOL _canRefresh;
-}
-
+@implementation ODRefreshControl
 @synthesize refreshing = _refreshing;
 @synthesize tintColor = _tintColor;
 
