@@ -387,8 +387,6 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _ignoreInset = YES;
             [blockScrollView setContentInset:self.originalContentInset];
             _ignoreInset = NO;
-            CGPoint offset = blockScrollView.contentOffset;
-            [blockScrollView setContentOffset:offset animated:NO];
             _activity.alpha = 0;
             _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
         } completion:^(BOOL finished) {
