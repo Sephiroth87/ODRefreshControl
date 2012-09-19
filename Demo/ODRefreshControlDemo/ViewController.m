@@ -27,7 +27,7 @@
     }
 }
 
-- (void)dropViewDidBeginRefreshing:(ODRefreshControl *)refreshControl
+- (void)dropViewDidBeginRefreshing:(id)refreshControl
 {
     double delayInSeconds = 3.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
