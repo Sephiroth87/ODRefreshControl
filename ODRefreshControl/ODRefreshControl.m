@@ -35,7 +35,6 @@
 @end
 
 @implementation ODRefreshControl
-
 @synthesize refreshing = _refreshing;
 @synthesize tintColor = _tintColor;
 
@@ -47,7 +46,11 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     return a + (b - a) * p;
 }
 
-- (id)initInScrollView:(UIScrollView *)scrollView
+- (id)initInScrollView:(UIScrollView *)scrollView {
+    return [self initInScrollView:scrollView withActivityIndicator:nil];
+}
+
+- (id)initInScrollView:(UIScrollView *)scrollView withActivityIndicator:(id)activity
 {
     self = [super initWithFrame:CGRectMake(0, -(kTotalViewHeight + scrollView.contentInset.top), scrollView.frame.size.width, kTotalViewHeight)];
     
@@ -60,11 +63,10 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
         [scrollView addObserver:self forKeyPath:@"contentInset" options:NSKeyValueObservingOptionNew context:nil];
         
-        _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        _activity.center = CGPointMake(floor(self.frame.size.width / 2), floor(self.frame.size.height / 2));
-        _activity.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        _activity.alpha = 0;
-        [_activity startAnimating];
+        _activity = activity ? activity : [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_activity setCenter:CGPointMake(floor(self.frame.size.width / 2), floor(self.frame.size.height / 2))];
+        [_activity setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
+        [_activity setAlpha:0];
         [self addSubview:_activity];
         
         _refreshing = NO;
@@ -129,12 +131,16 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)setActivityIndicatorViewStyle:(UIActivityIndicatorViewStyle)activityIndicatorViewStyle
 {
-    _activity.activityIndicatorViewStyle = activityIndicatorViewStyle;
+    if ([_activity isMemberOfClass:[UIActivityIndicatorView class]])
+        [_activity setActivityIndicatorViewStyle:activityIndicatorViewStyle];
 }
 
 - (UIActivityIndicatorViewStyle)activityIndicatorViewStyle
 {
-    return _activity.activityIndicatorViewStyle;
+    if ([_activity isMemberOfClass:[UIActivityIndicatorView class]])
+        return [_activity activityIndicatorViewStyle];
+
+    return 0;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -150,7 +156,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     if (!self.enabled || _ignoreOffset) {
         return;
     }
-    
+
     CGFloat offset = [[change objectForKey:@"new"] CGPointValue].y + self.originalContentInset.top;
     
     if (_refreshing) {
@@ -161,8 +167,9 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
             _shapeLayer.position = CGPointMake(0, kMaxDistance + offset + kOpenedViewHeight);
             [CATransaction commit];
-            _activity.center = CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2));
-            
+
+            [_activity setCenter:CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2))];
+
             _ignoreInset = YES;
             _ignoreOffset = YES;
             
@@ -335,15 +342,16 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         
         [CATransaction begin];
         [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
-        _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
+        [_activity layer].transform = CATransform3DMakeScale(0.1, 0.1, 1);
         [CATransaction commit];
         [UIView animateWithDuration:0.2 delay:0.15 options:UIViewAnimationOptionCurveLinear animations:^{
-            _activity.alpha = 1;
-            _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
+            [_activity setAlpha:1];
+            [_activity layer].transform = CATransform3DMakeScale(1, 1, 1);
         } completion:nil];
         
         self.refreshing = YES;
         _canRefresh = NO;
+        [_activity startAnimating];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
     
@@ -362,15 +370,15 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [_arrowLayer addAnimation:alphaAnimation forKey:nil];
         [_highlightLayer addAnimation:alphaAnimation forKey:nil];
         
-        _activity.alpha = 1;
-        _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
-        
+        [_activity setAlpha:1];
+        [_activity layer].transform = CATransform3DMakeScale(1, 1, 1);
+
         CGPoint offset = self.scrollView.contentOffset;
         _ignoreInset = YES;
         [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
         _ignoreInset = NO;
         [self.scrollView setContentOffset:offset animated:NO];
-        
+
         self.refreshing = YES;
         _canRefresh = NO;
     }
@@ -389,8 +397,8 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _ignoreInset = YES;
             [blockScrollView setContentInset:self.originalContentInset];
             _ignoreInset = NO;
-            _activity.alpha = 0;
-            _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
+            [_activity setAlpha:0];
+            [_activity layer].transform = CATransform3DMakeScale(0.1, 0.1, 1);
         } completion:^(BOOL finished) {
             [_shapeLayer removeAllAnimations];
             _shapeLayer.path = nil;
