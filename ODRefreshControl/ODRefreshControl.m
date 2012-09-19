@@ -173,7 +173,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
                         if (!_didSetInset) {
                             _didSetInset = YES;
                             _hasSectionHeaders = NO;
-                            if([self.scrollView respondsToSelector:@selector(numberOfSections)]){
+                            if([self.scrollView isKindOfClass:[UITableView class]]){
                                 for (int i = 0; i < [(UITableView *)self.scrollView numberOfSections]; ++i) {
                                     if ([(UITableView *)self.scrollView rectForHeaderInSection:i].size.height) {
                                         _hasSectionHeaders = YES;
