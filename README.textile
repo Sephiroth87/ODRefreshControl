@@ -51,6 +51,14 @@ The @ODRefreshControl@ can be customized using the following properties:
 @property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 </pre>
 
+h3. Using the iOS 6 control when possible
+
+This will take a UITableViewController and configure it to use a UIRefreshController if it's available (running iOS 6) or an ODRefreshController if it isn't. One or the other will be returned, which you can then customize if necessary.
+
+<pre>
+id *refreshControl = [ODRefreshControl setupRefreshForTableViewController:self withRefreshTarget:self action:@selector(dropViewDidBeginRefreshing:)];
+</pre>
+
 h2. Credits
 
 ODRefreshControl is brought to you by "Fabio Ritrovato":http://orangeinaday.com and "contributors to the project":https://github.com/Sephiroth87/ODRefreshControl/contributors. If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by "creating new issues":https://github.com/Sephiroth87/ODRefreshControl/issues/new. If you're using ODRefreshControl in your project, attribution would be nice. 
