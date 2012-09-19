@@ -10,7 +10,7 @@
 
 #import "ODRefreshControl.h"
 
-#define kTotalViewHeight    200
+#define kTotalViewHeight    400
 #define kOpenedViewHeight   44
 #define kMinTopPadding      9
 #define kMaxTopPadding      5
