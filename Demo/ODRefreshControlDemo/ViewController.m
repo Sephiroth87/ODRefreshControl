@@ -14,9 +14,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    ODRefreshControl *refreshControl = [[ODRefreshControl alloc] initInScrollView:self.tableView];
-    [refreshControl addTarget:self action:@selector(dropViewDidBeginRefreshing:) forControlEvents:UIControlEventValueChanged];
+	
+	[ODRefreshControl setupRefreshForTableViewController:self withRefreshTarget:self action:@selector(dropViewDidBeginRefreshing:)];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -28,6 +28,9 @@
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 
+// Return may be a UIRefreshControl or an ODRefreshControl depending on the situation
++ (id)setupRefreshForTableViewController:(UITableViewController *)controller withRefreshTarget:(id)target action:(SEL)action;
+
 - (id)initInScrollView:(UIScrollView *)scrollView;
 
 // Tells the control that a refresh operation was started programmatically

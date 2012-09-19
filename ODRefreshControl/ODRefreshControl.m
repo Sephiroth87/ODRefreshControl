@@ -47,6 +47,21 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     return a + (b - a) * p;
 }
 
++ (id)setupRefreshForTableViewController:(UITableViewController *)controller withRefreshTarget:(id)target action:(SEL)action{
+	if([controller respondsToSelector:@selector(refreshControl)]){
+		NSLog(@"Using iOS 6 Refresh Control");
+		UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+		[controller setRefreshControl:refreshControl];
+		[refreshControl addTarget:target action:action forControlEvents:UIControlEventValueChanged];
+		return refreshControl;
+	} else {
+		NSLog(@"Using the ODRefreshControl");
+		ODRefreshControl *refreshControl = [[ODRefreshControl alloc] initInScrollView:controller.tableView];
+		[refreshControl addTarget:target action:action forControlEvents:UIControlEventValueChanged];
+		return refreshControl;
+	}
+}
+
 - (id)initInScrollView:(UIScrollView *)scrollView
 {
     self = [super initWithFrame:CGRectMake(0, -(kTotalViewHeight + scrollView.contentInset.top), scrollView.frame.size.width, kTotalViewHeight)];
