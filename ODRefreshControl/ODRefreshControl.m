@@ -148,6 +148,21 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     return 0;
 }
 
+- (void)setActivityIndicatorViewColor:(UIColor *)activityIndicatorViewColor
+{
+    if ([_activity isKindOfClass:[UIActivityIndicatorView class]]) {
+        [(UIActivityIndicatorView *)_activity setColor:activityIndicatorViewColor];
+    }
+}
+
+- (UIColor *)activityIndicatorViewColor
+{
+    if ([_activity isKindOfClass:[UIActivityIndicatorView class]]) {
+        return [(UIActivityIndicatorView *)_activity color];
+    }
+    return nil;
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"contentInset"]) {
