@@ -22,6 +22,7 @@
     BOOL _ignoreOffset;
     BOOL _didSetInset;
     BOOL _hasSectionHeaders;
+    CGFloat _lastOffset;
 }
 
 @property (nonatomic, readonly) BOOL refreshing;
