@@ -150,14 +150,14 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)setActivityIndicatorViewColor:(UIColor *)activityIndicatorViewColor
 {
-    if ([_activity isKindOfClass:[UIActivityIndicatorView class]]) {
+    if ([_activity isKindOfClass:[UIActivityIndicatorView class]] && [_activity respondsToSelector:@selector(setColor:)]) {
         [(UIActivityIndicatorView *)_activity setColor:activityIndicatorViewColor];
     }
 }
 
 - (UIColor *)activityIndicatorViewColor
 {
-    if ([_activity isKindOfClass:[UIActivityIndicatorView class]]) {
+    if ([_activity isKindOfClass:[UIActivityIndicatorView class]] && [_activity respondsToSelector:@selector(color)]) {
         return [(UIActivityIndicatorView *)_activity color];
     }
     return nil;
