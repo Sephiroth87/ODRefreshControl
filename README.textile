@@ -4,7 +4,7 @@ __*Important note if your project doesn't use ARC*: you must add the @-fobjc-arc
 
 h1. ODRefreshControl
 
-!http://www.orangeinaday.com/img/ODRefreshControl.jpg!
+!http://www.orangeinaday.com/img/getImage.php?name=ODRefreshControl.jpg!
 
 ODRefreshControl is a "pull down to refresh" control for UIScrollView, like the one Apple introduced in iOS6, but available to anyone from iOS4 and up.
 
