@@ -242,7 +242,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
                 dontDraw = YES;
             }
         }
-        if (_lastOffset > offset && !self.scrollView.isTracking) {
+        if (offset > 0 && _lastOffset > offset && !self.scrollView.isTracking) {
             // If we are scrolling too fast, don't draw, and don't trigger unless the scrollView bounced back
             _canRefresh = NO;
             dontDraw = YES;
