@@ -385,11 +385,12 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [UIView animateWithDuration:0.2 delay:0.15 options:UIViewAnimationOptionCurveLinear animations:^{
             _activity.alpha = 1;
             _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
-        } completion:nil];
+        } completion:^(BOOL finished) {
+			[self sendActionsForControlEvents:UIControlEventValueChanged];
+		}];
         
         self.refreshing = YES;
         _canRefresh = NO;
-        [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
     
     CGPathRelease(path);
