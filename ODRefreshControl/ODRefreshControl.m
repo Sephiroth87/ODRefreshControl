@@ -167,7 +167,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
     if ([keyPath isEqualToString:@"contentInset"]) {
         if (!_ignoreInset) {
-            self.originalContentInset = [[change objectForKey:@"new"] UIEdgeInsetsValue];
+            self.originalContentInset = [[change objectForKey:NSKeyValueChangeNewKey] UIEdgeInsetsValue];
             self.frame = CGRectMake(0, -(kTotalViewHeight + self.scrollView.contentInset.top), self.scrollView.frame.size.width, kTotalViewHeight);
         }
         return;
@@ -177,7 +177,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         return;
     }
 
-    CGFloat offset = [[change objectForKey:@"new"] CGPointValue].y + self.originalContentInset.top;
+    CGFloat offset = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y + self.originalContentInset.top;
     
     if (_refreshing) {
         if (offset != 0) {
