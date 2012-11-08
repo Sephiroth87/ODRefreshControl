@@ -386,8 +386,8 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _activity.alpha = 1;
             _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
         } completion:^(BOOL finished) {
-			[self sendActionsForControlEvents:UIControlEventValueChanged];
-		}];
+            [self sendActionsForControlEvents:UIControlEventValueChanged];
+        }];
         
         self.refreshing = YES;
         _canRefresh = NO;
