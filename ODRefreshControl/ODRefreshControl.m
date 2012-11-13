@@ -10,7 +10,7 @@
 
 #import "ODRefreshControl.h"
 
-#define kTotalViewHeight    200
+#define kTotalViewHeight    400
 #define kOpenedViewHeight   44
 #define kMinTopPadding      9
 #define kMaxTopPadding      5
@@ -47,7 +47,8 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     return a + (b - a) * p;
 }
 
-+ (id)setupRefreshForTableViewController:(UITableViewController *)controller withRefreshTarget:(id)target action:(SEL)action{
++ (id)setupRefreshForTableViewController:(UITableViewController *)controller withRefreshTarget:(id)target action:(SEL)action
+{
 	if([controller respondsToSelector:@selector(refreshControl)]){
 		NSLog(@"Using iOS 6 Refresh Control");
 		UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -64,6 +65,11 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (id)initInScrollView:(UIScrollView *)scrollView
 {
+    return [self initInScrollView:scrollView activityIndicatorView:nil];
+}
+
+- (id)initInScrollView:(UIScrollView *)scrollView activityIndicatorView:(UIView *)activity
+{
     self = [super initWithFrame:CGRectMake(0, -(kTotalViewHeight + scrollView.contentInset.top), scrollView.frame.size.width, kTotalViewHeight)];
     
     if (self) {
@@ -75,11 +81,13 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
         [scrollView addObserver:self forKeyPath:@"contentInset" options:NSKeyValueObservingOptionNew context:nil];
         
-        _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _activity = activity ? activity : [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         _activity.center = CGPointMake(floor(self.frame.size.width / 2), floor(self.frame.size.height / 2));
         _activity.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         _activity.alpha = 0;
-        [_activity startAnimating];
+        if ([_activity respondsToSelector:@selector(startAnimating)]) {
+            [(UIActivityIndicatorView *)_activity startAnimating];
+        }
         [self addSubview:_activity];
         
         _refreshing = NO;
@@ -144,12 +152,32 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)setActivityIndicatorViewStyle:(UIActivityIndicatorViewStyle)activityIndicatorViewStyle
 {
-    _activity.activityIndicatorViewStyle = activityIndicatorViewStyle;
+    if ([_activity isKindOfClass:[UIActivityIndicatorView class]]) {
+        [(UIActivityIndicatorView *)_activity setActivityIndicatorViewStyle:activityIndicatorViewStyle];
+    }
 }
 
 - (UIActivityIndicatorViewStyle)activityIndicatorViewStyle
 {
-    return _activity.activityIndicatorViewStyle;
+    if ([_activity isKindOfClass:[UIActivityIndicatorView class]]) {
+        return [(UIActivityIndicatorView *)_activity activityIndicatorViewStyle];
+    }
+    return 0;
+}
+
+- (void)setActivityIndicatorViewColor:(UIColor *)activityIndicatorViewColor
+{
+    if ([_activity isKindOfClass:[UIActivityIndicatorView class]] && [_activity respondsToSelector:@selector(setColor:)]) {
+        [(UIActivityIndicatorView *)_activity setColor:activityIndicatorViewColor];
+    }
+}
+
+- (UIColor *)activityIndicatorViewColor
+{
+    if ([_activity isKindOfClass:[UIActivityIndicatorView class]] && [_activity respondsToSelector:@selector(color)]) {
+        return [(UIActivityIndicatorView *)_activity color];
+    }
+    return nil;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -165,7 +193,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     if (!self.enabled || _ignoreOffset) {
         return;
     }
-    
+
     CGFloat offset = [[change objectForKey:@"new"] CGPointValue].y + self.originalContentInset.top;
     
     if (_refreshing) {
@@ -176,8 +204,9 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
             _shapeLayer.position = CGPointMake(0, kMaxDistance + offset + kOpenedViewHeight);
             [CATransaction commit];
+
             _activity.center = CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2));
-            
+
             _ignoreInset = YES;
             _ignoreOffset = YES;
             
@@ -188,10 +217,12 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
                         if (!_didSetInset) {
                             _didSetInset = YES;
                             _hasSectionHeaders = NO;
-                            for (int i = 0; i < [(UITableView *)self.scrollView numberOfSections]; ++i) {
-                                if ([(UITableView *)self.scrollView rectForHeaderInSection:i].size.height) {
-                                    _hasSectionHeaders = YES;
-                                    break;
+                            if([self.scrollView isKindOfClass:[UITableView class]]){
+                                for (int i = 0; i < [(UITableView *)self.scrollView numberOfSections]; ++i) {
+                                    if ([(UITableView *)self.scrollView rectForHeaderInSection:i].size.height) {
+                                        _hasSectionHeaders = YES;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -212,20 +243,38 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         }
         return;
     } else {
-        // Check if we can trigger a new refresh
+        // Check if we can trigger a new refresh and if we can draw the control
+        BOOL dontDraw = NO;
         if (!_canRefresh) {
             if (offset >= 0) {
+                // We can refresh again after the control is scrolled out of view
                 _canRefresh = YES;
                 _didSetInset = NO;
             } else {
-                return;
+                dontDraw = YES;
             }
         } else {
             if (offset >= 0) {
-                return;
+                // Don't draw if the control is not visible
+                dontDraw = YES;
             }
         }
+        if (offset > 0 && _lastOffset > offset && !self.scrollView.isTracking) {
+            // If we are scrolling too fast, don't draw, and don't trigger unless the scrollView bounced back
+            _canRefresh = NO;
+            dontDraw = YES;
+        }
+        if (dontDraw) {
+            _shapeLayer.path = nil;
+            _shapeLayer.shadowPath = nil;
+            _arrowLayer.path = nil;
+            _highlightLayer.path = nil;
+            _lastOffset = offset;
+            return;
+        }
     }
+    
+    _lastOffset = offset;
     
     BOOL triggered = NO;
     
@@ -377,13 +426,13 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         
         _activity.alpha = 1;
         _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
-        
+
         CGPoint offset = self.scrollView.contentOffset;
         _ignoreInset = YES;
         [self.scrollView setContentInset:UIEdgeInsetsMake(kOpenedViewHeight + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
         _ignoreInset = NO;
         [self.scrollView setContentOffset:offset animated:NO];
-        
+
         self.refreshing = YES;
         _canRefresh = NO;
     }

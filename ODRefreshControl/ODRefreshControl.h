@@ -15,23 +15,28 @@
     CAShapeLayer *_shapeLayer;
     CAShapeLayer *_arrowLayer;
     CAShapeLayer *_highlightLayer;
-    UIActivityIndicatorView *_activity;
+    UIView *_activity;
     BOOL _refreshing;
     BOOL _canRefresh;
     BOOL _ignoreInset;
     BOOL _ignoreOffset;
     BOOL _didSetInset;
     BOOL _hasSectionHeaders;
+    CGFloat _lastOffset;
 }
 
 @property (nonatomic, readonly) BOOL refreshing;
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
+@property (nonatomic, strong) UIColor *activityIndicatorViewColor; // iOS5 or more
 
 // Return may be a UIRefreshControl or an ODRefreshControl depending on the situation
 + (id)setupRefreshForTableViewController:(UITableViewController *)controller withRefreshTarget:(id)target action:(SEL)action;
 
 - (id)initInScrollView:(UIScrollView *)scrollView;
+
+// use custom activity indicator
+- (id)initInScrollView:(UIScrollView *)scrollView activityIndicatorView:(UIView *)activity;
 
 // Tells the control that a refresh operation was started programmatically
 - (void)beginRefreshing;
