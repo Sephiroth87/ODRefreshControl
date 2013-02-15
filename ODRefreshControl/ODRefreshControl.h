@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface ODRefreshControl : UIControl {
+@interface ODRefreshControl : UIControl<UIAppearanceContainer> {
     CAShapeLayer *_shapeLayer;
     CAShapeLayer *_arrowLayer;
     CAShapeLayer *_highlightLayer;
@@ -26,7 +26,10 @@
 }
 
 @property (nonatomic, readonly) BOOL refreshing;
-@property (nonatomic, strong) UIColor *tintColor;
+@property (nonatomic, strong) UIColor *tintColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *strokeColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *shadowColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *highlightColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 @property (nonatomic, strong) UIColor *activityIndicatorViewColor; // iOS5 or more
 
