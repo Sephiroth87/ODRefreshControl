@@ -26,18 +26,42 @@
 #define kMaxArrowRadius     7
 #define kMaxDistance        53
 
+// UIAppearanceContainer: appearance property keys
+static struct {
+    __unsafe_unretained NSString *tintColor;
+    __unsafe_unretained NSString *strokeColor;
+    __unsafe_unretained NSString *shadowColor;
+    __unsafe_unretained NSString *highlightColor;
+} kAppearanceAttributes = {
+    .tintColor = @"tintColor",
+    .strokeColor = @"strokeColor",
+    .shadowColor = @"shadowColor",
+    .highlightColor = @"highlightColor",
+};
+
+// UIAppearanceContainer: default appearance
+static NSMutableDictionary *defaultAppearanceDictionary = nil;
+
+
 @interface ODRefreshControl ()
 
 @property (nonatomic, readwrite) BOOL refreshing;
 @property (nonatomic, assign) UIScrollView *scrollView;
 @property (nonatomic, assign) UIEdgeInsets originalContentInset;
 
+// UIAppearanceContainer: accessors for default and individual apperance properties
++ (void)setValue:(id)value forKey:(NSString *)key inAppearanceDictionary:(NSMutableDictionary *)appearance;
++ (BOOL)appearanceDictionary:(NSDictionary *)appearance hasValue:(id *)outValue forKey:(NSString *)key;
+
+// UIAppearanceContainer: individual appearance
+@property (nonatomic, strong) NSMutableDictionary *appearanceDictionary;
+- (id)appearanceValueForKey:(NSString *)key;
 @end
 
 @implementation ODRefreshControl
 
 @synthesize refreshing = _refreshing;
-@synthesize tintColor = _tintColor;
+@synthesize appearanceDictionary = _appearanceDictionary;
 
 @synthesize scrollView = _scrollView;
 @synthesize originalContentInset = _originalContentInset;
@@ -46,6 +70,29 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
     return a + (b - a) * p;
 }
+
++ (void)initialize
+{
+    // UIAppearanceContainer: setup default appearance
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        defaultAppearanceDictionary = [NSMutableDictionary new];
+        
+        [self setValue:[UIColor colorWithRed:155.0 / 255.0 green:162.0 / 255.0 blue:172.0 / 255.0 alpha:1.0]
+                forKey:kAppearanceAttributes.tintColor inAppearanceDictionary:defaultAppearanceDictionary];
+        
+        [self setValue:[[UIColor darkGrayColor] colorWithAlphaComponent:0.5]
+                forKey:kAppearanceAttributes.strokeColor inAppearanceDictionary:defaultAppearanceDictionary];
+        
+        [self setValue:[UIColor blackColor]
+                forKey:kAppearanceAttributes.shadowColor inAppearanceDictionary:defaultAppearanceDictionary];
+        
+        [self setValue:[[UIColor whiteColor] colorWithAlphaComponent:0.2]
+                forKey:kAppearanceAttributes.highlightColor inAppearanceDictionary:defaultAppearanceDictionary];
+    });
+}
+
 
 - (id)initInScrollView:(UIScrollView *)scrollView {
     return [self initInScrollView:scrollView activityIndicatorView:nil];
@@ -56,6 +103,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     self = [super initWithFrame:CGRectMake(0, -(kTotalViewHeight + scrollView.contentInset.top), scrollView.frame.size.width, kTotalViewHeight)];
     
     if (self) {
+        self.appearanceDictionary = [NSMutableDictionary dictionary];
         self.scrollView = scrollView;
         self.originalContentInset = scrollView.contentInset;
         
@@ -79,13 +127,12 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         _ignoreOffset = NO;
         _didSetInset = NO;
         _hasSectionHeaders = NO;
-        _tintColor = [UIColor colorWithRed:155.0 / 255.0 green:162.0 / 255.0 blue:172.0 / 255.0 alpha:1.0];
         
         _shapeLayer = [CAShapeLayer layer];
-        _shapeLayer.fillColor = [_tintColor CGColor];
-        _shapeLayer.strokeColor = [[[UIColor darkGrayColor] colorWithAlphaComponent:0.5] CGColor];
+        _shapeLayer.fillColor = [self.tintColor CGColor];
+        _shapeLayer.strokeColor = [self.strokeColor CGColor];
         _shapeLayer.lineWidth = 0.5;
-        _shapeLayer.shadowColor = [[UIColor blackColor] CGColor];
+        _shapeLayer.shadowColor = [self.shadowColor CGColor];
         _shapeLayer.shadowOffset = CGSizeMake(0, 1);
         _shapeLayer.shadowOpacity = 0.4;
         _shapeLayer.shadowRadius = 0.5;
@@ -98,7 +145,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [_shapeLayer addSublayer:_arrowLayer];
         
         _highlightLayer = [CAShapeLayer layer];
-        _highlightLayer.fillColor = [[[UIColor whiteColor] colorWithAlphaComponent:0.2] CGColor];
+        _highlightLayer.fillColor = [self.highlightColor CGColor];
         [_shapeLayer addSublayer:_highlightLayer];
     }
     return self;
@@ -127,10 +174,56 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     }
 }
 
+- (UIColor *)tintColor
+{
+    // tintColor is an UIAppearanceContainer property
+    return [self appearanceValueForKey:kAppearanceAttributes.tintColor];
+}
+
 - (void)setTintColor:(UIColor *)tintColor
 {
-    _tintColor = tintColor;
-    _shapeLayer.fillColor = [_tintColor CGColor];
+    // tintColor is an UIAppearanceContainer property
+    [ODRefreshControl setValue:tintColor forKey:kAppearanceAttributes.tintColor inAppearanceDictionary:_appearanceDictionary];
+    _shapeLayer.fillColor = [tintColor CGColor];
+}
+
+- (UIColor *)strokeColor
+{
+    // strokeColor is an UIAppearanceContainer property
+    return [self appearanceValueForKey:kAppearanceAttributes.strokeColor];
+}
+
+- (void)setStrokeColor:(UIColor *)strokeColor
+{
+    // strokeColor is an UIAppearanceContainer property
+    [ODRefreshControl setValue:strokeColor forKey:kAppearanceAttributes.strokeColor inAppearanceDictionary:_appearanceDictionary];
+    _shapeLayer.strokeColor = [strokeColor CGColor];
+}
+
+- (UIColor *)shadowColor
+{
+    // shadowColor is an UIAppearanceContainer property
+    return [self appearanceValueForKey:kAppearanceAttributes.shadowColor];
+}
+
+- (void)setShadowColor:(UIColor *)shadowColor
+{
+    // shadowColor is an UIAppearanceContainer property
+    [ODRefreshControl setValue:shadowColor forKey:kAppearanceAttributes.shadowColor inAppearanceDictionary:_appearanceDictionary];
+    _shapeLayer.shadowColor = [shadowColor CGColor];
+}
+
+- (UIColor *)highlightColor
+{
+    // highlightColor is an UIAppearanceContainer property
+    return [self appearanceValueForKey:kAppearanceAttributes.highlightColor];
+}
+
+- (void)setHighlightColor:(UIColor *)highlightColor
+{
+    // highlightColor is an UIAppearanceContainer property
+    [ODRefreshControl setValue:highlightColor forKey:kAppearanceAttributes.highlightColor inAppearanceDictionary:_appearanceDictionary];
+    _highlightLayer.fillColor = [highlightColor CGColor];
 }
 
 - (void)setActivityIndicatorViewStyle:(UIActivityIndicatorViewStyle)activityIndicatorViewStyle
@@ -452,6 +545,51 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _ignoreInset = NO;
         }];
     }
+}
+
+#pragma mark -
+
+// UIAppearanceContainer helper method
+//
+// Stores value in appearanceDictionary for a given appearance key.
+// Nil values are accepted.
++ (void)setValue:(id)value forKey:(NSString *)key inAppearanceDictionary:(NSMutableDictionary *)appearanceDictionary
+{
+    [appearanceDictionary setObject:(value ?: [NSNull null]) forKey:key];
+}
+
+// UIAppearanceContainer helper method
+//
+// Returns YES if appearanceDictionary has a value for the given appearance key.
+// Stores the value in the outValue pointer.
++ (BOOL)appearanceDictionary:(NSDictionary *)appearanceDictionary hasValue:(id *)outValue forKey:(NSString *)key
+{
+    id value = [appearanceDictionary objectForKey:key];
+    if (value == nil) {
+        return NO;
+    }
+    if (outValue != NULL) {
+        *outValue = (value == [NSNull null]) ? nil : value;
+    }
+    return YES;
+}
+
+// UIAppearanceContainer helper method
+//
+// Returns individual value if it is has been set, or the default value.
+- (id)appearanceValueForKey:(NSString *)key
+{
+    id value;
+    
+    if ([ODRefreshControl appearanceDictionary:_appearanceDictionary hasValue:&value forKey:key]) {
+        return value;
+    }
+    
+    if ([ODRefreshControl appearanceDictionary:defaultAppearanceDictionary hasValue:&value forKey:key]) {
+        return value;
+    }
+    
+    return nil;
 }
 
 @end
