@@ -26,9 +26,16 @@
 }
 
 @property (nonatomic, readonly) BOOL refreshing;
+
+#ifdef __IPHONE_5_0
+@property (nonatomic, strong) UIColor *tintColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *activityIndicatorViewColor UI_APPEARANCE_SELECTOR; // iOS5 or more
+#else
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 @property (nonatomic, strong) UIColor *activityIndicatorViewColor; // iOS5 or more
+#endif
 
 - (id)initInScrollView:(UIScrollView *)scrollView;
 
