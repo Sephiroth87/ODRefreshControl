@@ -37,6 +37,9 @@
 @property (nonatomic, strong) UIColor *activityIndicatorViewColor; // iOS5 or more
 #endif
 
+// Return may be a UIRefreshControl or an ODRefreshControl depending on the situation
++ (id)setupRefreshForTableViewController:(UITableViewController *)controller withRefreshTarget:(id)target action:(SEL)action;
+
 - (id)initInScrollView:(UIScrollView *)scrollView;
 
 // use custom activity indicator
