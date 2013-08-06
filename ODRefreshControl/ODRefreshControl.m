@@ -424,7 +424,10 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 - (void)endRefreshing
 {
     if (_refreshing) {
+
         self.refreshing = NO;
+		_canRefresh = YES;
+
         // Create a temporary retain-cycle, so the scrollView won't be released
         // halfway through the end animation.
         // This allows for the refresh control to clean up the observer,
