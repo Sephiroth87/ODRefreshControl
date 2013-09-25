@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.platform    = :ios
 
   s.source_files = 'ODRefreshControl/ODRefreshControl*.{h,m}'
-  s.clean_path   = 'Demo'
+  #s.clean_path   = 'Demo'
   s.framework    = 'QuartzCore'
 
   s.requires_arc = true
