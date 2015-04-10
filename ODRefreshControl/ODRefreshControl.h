@@ -11,19 +11,7 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface ODRefreshControl : UIControl {
-    CAShapeLayer *_shapeLayer;
-    CAShapeLayer *_arrowLayer;
-    CAShapeLayer *_highlightLayer;
-    UIView *_activity;
-    BOOL _refreshing;
-    BOOL _canRefresh;
-    BOOL _ignoreInset;
-    BOOL _ignoreOffset;
-    BOOL _didSetInset;
-    BOOL _hasSectionHeaders;
-    CGFloat _lastOffset;
-}
+@interface ODRefreshControl : UIControl
 
 @property (nonatomic, readonly, getter=isRefreshing) BOOL refreshing;
 
