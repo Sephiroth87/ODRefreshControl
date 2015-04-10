@@ -1,6 +1,4 @@
-__*Important note if your project doesn't use ARC*: you must add the @-fobjc-arc@ compiler flag to @ODRefreshControl.m@ in Target Settings > Build Phases > Compile Sources.__
-
-*If you are using ODRefreshControl in your app, drop me a line so I can add your app here!*
+__*Notice:* There's a new 2.0 branch where I updated the control for iOS7 plus I plan to do some interesting new features. If people could try it out so I can be sure I didn't break anything it'd be great, and report any issue you find, I'd really appreciate that :)
 
 h1. ODRefreshControl
 
@@ -13,6 +11,8 @@ h2. Installation
 * Drag the @ODRefreshControl/ODRefreshControl@ folder into your project. 
 * Add the *QuartzCore* framework to your project.
 * @#import "ODRefreshControl.h"@
+
+__*Important note if your project doesn't use ARC*: you must add the @-fobjc-arc@ compiler flag to @ODRefreshControl.m@ in Target Settings > Build Phases > Compile Sources.__
 
 h2. Usage
 
@@ -55,4 +55,3 @@ The @ODRefreshControl@ can be customized using the following properties:
 h2. Credits
 
 ODRefreshControl is brought to you by "Fabio Ritrovato":http://orangeinaday.com and "contributors to the project":https://github.com/Sephiroth87/ODRefreshControl/contributors. If you have feature suggestions or bug reports, feel free to help out by sending pull requests or by "creating new issues":https://github.com/Sephiroth87/ODRefreshControl/issues/new. If you're using ODRefreshControl in your project, attribution would be nice.
-!https://cruel-carlota.pagodabox.com/a9d517c98620f7f8e865458f744c1cbb!
