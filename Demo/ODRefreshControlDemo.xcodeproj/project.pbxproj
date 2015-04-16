@@ -13,9 +13,10 @@
 		E5013A2B15A43A940035F4A0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E5013A2915A43A940035F4A0 /* InfoPlist.strings */; };
 		E5013A2D15A43A940035F4A0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E5013A2C15A43A940035F4A0 /* main.m */; };
 		E5013A3115A43A940035F4A0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E5013A3015A43A940035F4A0 /* AppDelegate.m */; };
-		E5013A3415A43A940035F4A0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5013A3315A43A940035F4A0 /* ViewController.m */; };
 		E5013A4515A43B8C0035F4A0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5013A4415A43B8C0035F4A0 /* QuartzCore.framework */; };
 		E5013A4A15A43BA60035F4A0 /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = E5013A4915A43BA60035F4A0 /* ODRefreshControl.m */; };
+		E5AE7DD21ADFFA4300898A71 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5AE7DD11ADFFA4300898A71 /* MainViewController.m */; };
+		E5AE7DD51ADFFA7B00898A71 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5AE7DD41ADFFA7B00898A71 /* TestViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,11 +30,13 @@
 		E5013A2E15A43A940035F4A0 /* ODRefreshControlDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ODRefreshControlDemo-Prefix.pch"; sourceTree = "<group>"; };
 		E5013A2F15A43A940035F4A0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E5013A3015A43A940035F4A0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		E5013A3215A43A940035F4A0 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		E5013A3315A43A940035F4A0 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		E5013A4415A43B8C0035F4A0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E5013A4815A43BA60035F4A0 /* ODRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODRefreshControl.h; sourceTree = "<group>"; };
 		E5013A4915A43BA60035F4A0 /* ODRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRefreshControl.m; sourceTree = "<group>"; };
+		E5AE7DD01ADFFA4300898A71 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		E5AE7DD11ADFFA4300898A71 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		E5AE7DD31ADFFA7B00898A71 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		E5AE7DD41ADFFA7B00898A71 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,8 +87,10 @@
 			children = (
 				E5013A2F15A43A940035F4A0 /* AppDelegate.h */,
 				E5013A3015A43A940035F4A0 /* AppDelegate.m */,
-				E5013A3215A43A940035F4A0 /* ViewController.h */,
-				E5013A3315A43A940035F4A0 /* ViewController.m */,
+				E5AE7DD01ADFFA4300898A71 /* MainViewController.h */,
+				E5AE7DD11ADFFA4300898A71 /* MainViewController.m */,
+				E5AE7DD31ADFFA7B00898A71 /* TestViewController.h */,
+				E5AE7DD41ADFFA7B00898A71 /* TestViewController.m */,
 				E5013A2715A43A940035F4A0 /* Supporting Files */,
 			);
 			path = ODRefreshControlDemo;
@@ -174,9 +179,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5AE7DD51ADFFA7B00898A71 /* TestViewController.m in Sources */,
 				E5013A2D15A43A940035F4A0 /* main.m in Sources */,
 				E5013A3115A43A940035F4A0 /* AppDelegate.m in Sources */,
-				E5013A3415A43A940035F4A0 /* ViewController.m in Sources */,
+				E5AE7DD21ADFFA4300898A71 /* MainViewController.m in Sources */,
 				E5013A4A15A43BA60035F4A0 /* ODRefreshControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
