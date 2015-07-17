@@ -474,6 +474,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         if (!_ignoreInset) {
             self.originalContentInset = [[change objectForKey:@"new"] UIEdgeInsetsValue];
             self.frame = CGRectMake(0, 0, self.scrollView.frame.size.width, 0);
+            _lastOffset = self.scrollView.contentOffset.y + self.originalContentInset.top;
         }
         return;
     }
@@ -487,6 +488,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     self.frame = CGRectMake(0, -height - self.originalContentInset.top + [self navigationBarInset], self.scrollView.frame.size.width, height);
     
     if (_refreshing) {
+        _lastOffset = offset;
         if (offset != 0) {
             _ignoreInset = YES;
             _ignoreOffset = YES;
@@ -527,8 +529,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         // Check if we can trigger a new refresh and if we can draw the control
         BOOL dontDraw = NO;
         if (!_canRefresh) {
-            if (offset >= 0) {
-                // We can refresh again after the control is scrolled out of view
+            if (self.scrollView.isDragging && _lastOffset == 0 && offset <= 0) {
                 _canRefresh = YES;
                 _didSetInset = NO;
             } else {
@@ -552,20 +553,9 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         }
     }
     
-    
-    // Don't trigger refresh if someone is setting the offset programmatically
-    if (!_canRefresh) {
-        if (self.scrollView.isDragging) {
-            _canRefresh = YES;
-        } else {
-            _lastOffset = offset;
-            return;
-        }
-    }
-    
     _lastOffset = offset;
     
-    if (height >= [_contentView triggerHeight]) {
+    if (_canRefresh && height >= [_contentView triggerHeight]) {
         [_contentView beginRefreshing:YES];
         self.refreshing = YES;
         _canRefresh = NO;
@@ -611,6 +601,9 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _ignoreInset = NO;
         }];
         [_contentView endRefreshing];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.refreshing = NO;
+        });
     }
 }
 
