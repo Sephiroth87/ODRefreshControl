@@ -24,7 +24,7 @@
 #define kMaxArrowSize       3
 #define kMinArrowRadius     5
 #define kMaxArrowRadius     7
-#define kMaxDistance        53
+#define kMaxDistance        36
 
 @interface ODRefreshControl ()
 
@@ -58,6 +58,11 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     if (self) {
         self.scrollView = scrollView;
         self.originalContentInset = scrollView.contentInset;
+        
+        
+        UIView *topview = [[UIView alloc] initWithFrame:CGRectMake(0,-480,480,480)];
+        topview.backgroundColor = [UIColor colorWithRed:226.0/255.0 green:231.0/255.0 blue:238.0/255.0 alpha:1];
+        [scrollView addSubview:topview];
         
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [scrollView addSubview:self];
