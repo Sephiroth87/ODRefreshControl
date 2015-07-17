@@ -24,35 +24,27 @@ const CGFloat kMinArrowRadius   = 5.0f;
 const CGFloat kMaxArrowRadius   = 7.0f;
 const CGFloat kMaxDistance      = 53.0f;
 
-@interface ODRefreshControlContentView_iOS6 : UIControl
-
-@property (nonatomic, strong) UIColor *tintColor;
-@property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
-@property (nonatomic, strong) UIColor *activityIndicatorViewColor;
+@interface ODRefreshControlDefaultContentView : UIView <ODRefreshControlContentView>
 
 - (id)initWithFrame:(CGRect)frame activityIndicatorView:(UIView *)activity;
 
-- (CGFloat)triggerHeight;
-- (CGFloat)openHeight;
-
-- (void)beginRefreshing:(BOOL)animated;
-- (void)endRefreshing;
+@property (nonatomic,getter=isEnabled) BOOL enabled;
+@property (nonatomic, strong) UIColor *tintColor;
 
 @end
 
-@interface ODRefreshControlContentView_iOS6 ()
+@interface ODRefreshControlDefaultContentView ()
 {
     CAShapeLayer *_shapeLayer;
     CAShapeLayer *_arrowLayer;
     CAShapeLayer *_highlightLayer;
     UIView *_activity;
-    UIColor *_tintColor;
     BOOL _refreshing;
 }
 
 @end
 
-@implementation ODRefreshControlContentView_iOS6
+@implementation ODRefreshControlDefaultContentView
 
 static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
@@ -105,7 +97,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 - (void)setEnabled:(BOOL)enabled
 {
-    [super setEnabled:enabled];
+    _enabled = enabled;
     _shapeLayer.hidden = !self.enabled;
 }
 
@@ -113,11 +105,6 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
     _tintColor = tintColor;
     _shapeLayer.fillColor = [_tintColor CGColor];
-}
-
-- (UIColor *)tintColor
-{
-    return _tintColor;
 }
 
 - (void)setActivityIndicatorViewStyle:(UIActivityIndicatorViewStyle)activityIndicatorViewStyle
@@ -325,8 +312,8 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _arrowLayer.path = nil;
             [_highlightLayer removeAllAnimations];
             _highlightLayer.path = nil;
+            _refreshing = NO;
         }];
-        _refreshing = NO;
     }
 }
 
@@ -344,7 +331,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
 @interface ODRefreshControl ()
 {
-    ODRefreshControlContentView_iOS6 *_contentView;
+    UIView<ODRefreshControlContentView> *_contentView;
     
     BOOL _canRefresh;
     BOOL _ignoreInset;
@@ -379,7 +366,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
         [scrollView addObserver:self forKeyPath:@"contentInset" options:NSKeyValueObservingOptionNew context:nil];
         
-        _contentView = [[ODRefreshControlContentView_iOS6 alloc] initWithFrame:self.bounds activityIndicatorView:activity];
+        _contentView = [[ODRefreshControlDefaultContentView alloc] initWithFrame:self.bounds activityIndicatorView:activity];
         _contentView.clipsToBounds = YES;
         _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self addSubview:_contentView];
@@ -583,7 +570,6 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 - (void)endRefreshing
 {
     if (_refreshing) {
-        self.refreshing = NO;
         // Create a temporary retain-cycle, so the scrollView won't be released
         // halfway through the end animation.
         // This allows for the refresh control to clean up the observer,
