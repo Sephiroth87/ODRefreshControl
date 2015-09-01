@@ -339,6 +339,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     BOOL _didSetInset;
     BOOL _hasSectionHeaders;
     CGFloat _lastOffset;
+    CGFloat _currentTopInset;
 }
 
 @property (nonatomic, readwrite) BOOL refreshing;
@@ -459,7 +460,9 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
     if ([keyPath isEqualToString:@"contentInset"]) {
         if (!_ignoreInset) {
-            self.originalContentInset = [[change objectForKey:@"new"] UIEdgeInsetsValue];
+            UIEdgeInsets originalContentInset = [[change objectForKey:@"new"] UIEdgeInsetsValue];
+            originalContentInset.top -= _currentTopInset;
+            self.originalContentInset = originalContentInset;
             self.frame = CGRectMake(0, 0, self.scrollView.frame.size.width, 0);
             _lastOffset = self.scrollView.contentOffset.y + self.originalContentInset.top;
         }
@@ -497,15 +500,19 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
                             }
                         }
                         if (_hasSectionHeaders) {
-                            [self.scrollView setContentInset:UIEdgeInsetsMake(MIN(-offset, [_contentView openHeight]) + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
+                            _currentTopInset = MIN(-offset, [_contentView openHeight]);
+                            [self.scrollView setContentInset:UIEdgeInsetsMake(_currentTopInset + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
                         } else {
-                            [self.scrollView setContentInset:UIEdgeInsetsMake([_contentView openHeight] + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
+                            _currentTopInset = [_contentView openHeight];
+                            [self.scrollView setContentInset:UIEdgeInsetsMake(_currentTopInset + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
                         }
                     } else if (_didSetInset && _hasSectionHeaders) {
-                        [self.scrollView setContentInset:UIEdgeInsetsMake(-offset + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
+                        _currentTopInset = -offset;
+                        [self.scrollView setContentInset:UIEdgeInsetsMake(_currentTopInset + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right)];
                     }
                 }
             } else if (_hasSectionHeaders) {
+                _currentTopInset = 0.0f;
                 [self.scrollView setContentInset:self.originalContentInset];
             }
             _ignoreInset = NO;
@@ -559,7 +566,8 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     
     CGPoint offset = self.scrollView.contentOffset;
     _ignoreInset = YES;
-    self.scrollView.contentInset = UIEdgeInsetsMake([_contentView openHeight] + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right);
+    _currentTopInset = [_contentView openHeight];
+    self.scrollView.contentInset = UIEdgeInsetsMake(_currentTopInset + self.originalContentInset.top, self.originalContentInset.left, self.originalContentInset.bottom, self.originalContentInset.right);
     _ignoreInset = NO;
     [self.scrollView setContentOffset:offset animated:NO];
     
@@ -577,6 +585,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         __block UIScrollView *blockScrollView = self.scrollView;
         [UIView animateWithDuration:0.4 animations:^{
             _ignoreInset = YES;
+            _currentTopInset = 0.0f;
             [blockScrollView setContentInset:self.originalContentInset];
             _ignoreInset = NO;
         } completion:^(BOOL finished) {
