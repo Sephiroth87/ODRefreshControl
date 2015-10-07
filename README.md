@@ -6,7 +6,7 @@
 
 # ODRefreshControl
 
-![refresh gif]
+![refresh gif](https://github.com/wolfcon/ODRefreshControl/blob/master/refresh.gif)
 
 ODRefreshControl is a "pull down to refresh" control for UIScrollView, like the one Apple introduced in iOS6, but available to anyone from iOS4 and up.
 
@@ -56,6 +56,8 @@ The `ODRefreshControl` can be customized using the following properties:
 @property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 
 @property (nonatomic, strong) UIColor *activityIndicatorViewColor; // iOS5 or more
+
+@property (nonatomic, strong) UILabel *finishedLabel;
 ```
 
 
