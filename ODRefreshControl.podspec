@@ -1,14 +1,13 @@
 Pod::Spec.new do |s|
   s.name     = 'ODRefreshControl'
-  s.version  = '1.2'
+  s.version  = '0.1'
   s.license  = 'MIT'
-  s.summary  = "A pull down to refresh control like the one in Apple's iOS6 Mail App."
-  s.homepage = 'https://github.com/Sephiroth87/ODRefreshControl'
-  s.author   = { 'Fabio Ritrovato' => 'fabio@orangeinaday.com' }
-  s.source   = { :git => 'https://github.com/Sephiroth87/ODRefreshControl.git', :tag => '1.2' }
+  s.summary  = "水滴型下拉刷新控件(A pull down to refresh control like water dropped)."
+  s.homepage = 'https://github.com/wolfcon/ODRefreshControl'
+  s.author   = { 'Frank(fork from Fabio Ritrovato)' => '472730949@qq.com' }
+  s.source   = { :git => 'https://github.com/wolfcon/ODRefreshControl.git', :tag => '0.1' }
 
-  s.description = 'ODRefreshControl is a "pull down to refresh" control for UIScrollView,' \
-                  'like the one Apple introduced in iOS6, but available to anyone from iOS4 and up.'
+  s.description = '水滴型下拉刷新控件(A pull down to refresh control like water dropped).'
   s.platform    = :ios
 
   s.source_files = 'ODRefreshControl/ODRefreshControl*.{h,m}'
