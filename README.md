@@ -1,4 +1,4 @@
-### From original author:
+### 原作者的话:
 
 *Notice:* There's a new 2.0 branch where I updated the control for iOS7 plus I plan to do some interesting new features. If people could try it out so I can be sure I didn't break anything it'd be great, and report any issue you find, I'd really appreciate that :)
 
@@ -10,7 +10,7 @@
 
 ODRefreshControl is a "pull down to refresh" control for UIScrollView, like the one Apple introduced in iOS6, but available to anyone from iOS4 and up.
 
-## Installation
+## 安装方法(Installation)
 
 - Drag the `ODRefreshControl/ODRefreshControl` folder into your project. 
 - Add the **QuartzCore** framework to your project.
@@ -18,23 +18,25 @@ ODRefreshControl is a "pull down to refresh" control for UIScrollView, like the 
 
 ***Important note if your project doesn't use ARC***: *you must add the `-fobjc-arc` compiler flag to `ODRefreshControl.m` in Target Settings > Build Phases > Compile Sources.*
 
-## Usage
+## 使用方法(Usage)
 
 (see sample Xcode project in `/Demo`)
 
-### Adding a refresh control to your table view
+### 添加一个下拉刷新控件(Adding a refresh control to your table view)
 
 ``` objective-c
-ODRefreshControl *refreshControl = [[ODRefreshControl alloc] initInScrollView:self.scrollView];
+ODRefreshControl *refreshControl = [[ODRefreshControl alloc] initInScrollView:self.tableView];
 ```
 
-To know when the refresh operation has started, add an action method to the UIControlEventValueChanged event of the control
+给控件添加一个`UIControlEventValueChanged` 事件
+(*To know when the refresh operation has started, add an action method to the `UIControlEventValueChanged` event of the control*)
 
 ``` objective-c
 [refreshControl addTarget:self action:@selector(dropViewDidBeginRefreshing:) forControlEvents:UIControlEventValueChanged];
 ```
 
-If you’d like to programmatically start the refresh operation, use
+一般不显式的调用程序来开始刷新, 除非你有此需要
+(*If you’d like to programmatically start the refresh operation, use*)
 
 ``` objective-c
 [refreshControl beginRefreshing];
@@ -46,7 +48,7 @@ Remember to tell the control when the refresh operation has ended
 [refreshControl endRefreshing];
 ```
 
-#### Customization
+#### 可自定义的属性(Customization)
 
 The `ODRefreshControl` can be customized using the following properties:
 
