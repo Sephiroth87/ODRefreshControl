@@ -6,7 +6,7 @@
 
 # ODRefreshControl
 
-![refresh gif](https://github.com/wolfcon/ODRefreshControl/blob/master/refresh.gif)
+![refresh gif](https://github.com/wolfcon/ODRefreshControl/blob/master/下拉刷新.gif)
 
 ODRefreshControl is a "pull down to refresh" control for UIScrollView, like the one Apple introduced in iOS6, but available to anyone from iOS4 and up.
 
