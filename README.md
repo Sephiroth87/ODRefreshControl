@@ -60,6 +60,8 @@ The `ODRefreshControl` can be customized using the following properties:
 @property (nonatomic, strong) UIColor *activityIndicatorViewColor; // iOS5 or more
 
 @property (nonatomic, strong) UILabel *finishedLabel;
+
+@property (nonatomic, assign) CGFloat finishedLabelShownInterval; // default 0.5s //默认0.5秒
 ```
 
 

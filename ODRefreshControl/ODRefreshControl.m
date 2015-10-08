@@ -78,6 +78,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         _finishedLabel.text = @"✔️ Finished!";
         _finishedLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
         [self addSubview:_finishedLabel];
+        _finishedLabelShownInterval = 0.5;
         
         _refreshing = NO;
         _canRefresh = YES;
@@ -439,32 +440,39 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         // This allows for the refresh control to clean up the observer,
         // in the case the scrollView is released while the animation is running
         
+        // show finished label
+        // 显示完成标签
         _finishedLabel.alpha = 1;
         _activity.alpha = 0;
         _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
         
         __block UIScrollView *blockScrollView = self.scrollView;
-        [UIView animateWithDuration:0.5 animations:^{
-            _ignoreInset = YES;
-            [blockScrollView setContentInset:self.originalContentInset];
-            _ignoreInset = NO;
-            
-            _finishedLabel.alpha = 0;
-        } completion:^(BOOL finished) {
-            [_shapeLayer removeAllAnimations];
-            _shapeLayer.path = nil;
-            _shapeLayer.shadowPath = nil;
-            _shapeLayer.position = CGPointZero;
-            [_arrowLayer removeAllAnimations];
-            _arrowLayer.path = nil;
-            [_highlightLayer removeAllAnimations];
-            _highlightLayer.path = nil;
-            // We need to use the scrollView somehow in the end block,
-            // or it'll get released in the animation block.
-            _ignoreInset = YES;
-            [blockScrollView setContentInset:self.originalContentInset];
-            _ignoreInset = NO;
-        }];
+        
+        // default delay 0.5s show finished label;
+        // 默认延迟0.5s用来显示完成标签
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_finishedLabelShownInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:0.4 animations:^{
+                _ignoreInset = YES;
+                [blockScrollView setContentInset:self.originalContentInset];
+                _ignoreInset = NO;
+                
+                _finishedLabel.alpha = 0;
+            } completion:^(BOOL finished) {
+                [_shapeLayer removeAllAnimations];
+                _shapeLayer.path = nil;
+                _shapeLayer.shadowPath = nil;
+                _shapeLayer.position = CGPointZero;
+                [_arrowLayer removeAllAnimations];
+                _arrowLayer.path = nil;
+                [_highlightLayer removeAllAnimations];
+                _highlightLayer.path = nil;
+                // We need to use the scrollView somehow in the end block,
+                // or it'll get released in the animation block.
+                _ignoreInset = YES;
+                [blockScrollView setContentInset:self.originalContentInset];
+                _ignoreInset = NO;
+            }];
+        });
     }
 }
 

@@ -26,6 +26,7 @@
 }
 
 @property (nonatomic, readonly, getter=isRefreshing) BOOL refreshing;
+@property (nonatomic, assign) CGFloat finishedLabelShownInterval; // default 0.5s //默认0.5秒
 
 #ifdef __IPHONE_5_0
 @property (nonatomic, strong) UIColor *tintColor UI_APPEARANCE_SELECTOR;
