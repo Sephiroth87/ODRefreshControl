@@ -7,6 +7,10 @@
 //
 // https://github.com/Sephiroth87/ODRefreshControl
 //
+//
+//  Change by Frank on 10/7/15
+//  Add finished Label.
+//
 
 #import "ODRefreshControl.h"
 
@@ -36,12 +40,6 @@
 
 @implementation ODRefreshControl
 
-@synthesize refreshing = _refreshing;
-@synthesize tintColor = _tintColor;
-
-@synthesize scrollView = _scrollView;
-@synthesize originalContentInset = _originalContentInset;
-
 static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 {
     return a + (b - a) * p;
@@ -65,13 +63,22 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         [scrollView addObserver:self forKeyPath:@"contentInset" options:NSKeyValueObservingOptionNew context:nil];
         
         _activity = activity ? activity : [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        _activity.center = CGPointMake(floor(self.frame.size.width / 2), floor(self.frame.size.height / 2));
         _activity.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         _activity.alpha = 0;
         if ([_activity respondsToSelector:@selector(startAnimating)]) {
             [(UIActivityIndicatorView *)_activity startAnimating];
         }
         [self addSubview:_activity];
+        
+        //add the label "Finished"
+        _finishedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 44)];
+        _finishedLabel.textAlignment = NSTextAlignmentCenter;
+        _finishedLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        _finishedLabel.alpha = 0;
+        _finishedLabel.text = @"✔️ Finished!";
+        _finishedLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+        [self addSubview:_finishedLabel];
+        _finishedLabelShownInterval = 0.5;
         
         _refreshing = NO;
         _canRefresh = YES;
@@ -188,7 +195,9 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _shapeLayer.position = CGPointMake(0, kMaxDistance + offset + kOpenedViewHeight);
             [CATransaction commit];
 
-            _activity.center = CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2));
+            CGPoint center = CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2));
+            _activity.center = center;
+            _finishedLabel.center = center;
 
             _ignoreInset = YES;
             _ignoreOffset = YES;
@@ -409,6 +418,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         
         _activity.alpha = 1;
         _activity.layer.transform = CATransform3DMakeScale(1, 1, 1);
+        _finishedLabel.alpha = 1;
 
         CGPoint offset = self.scrollView.contentOffset;
         _ignoreInset = YES;
@@ -429,28 +439,40 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
         // halfway through the end animation.
         // This allows for the refresh control to clean up the observer,
         // in the case the scrollView is released while the animation is running
+        
+        // show finished label
+        // 显示完成标签
+        _finishedLabel.alpha = 1;
+        _activity.alpha = 0;
+        _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
+        
         __block UIScrollView *blockScrollView = self.scrollView;
-        [UIView animateWithDuration:0.4 animations:^{
-            _ignoreInset = YES;
-            [blockScrollView setContentInset:self.originalContentInset];
-            _ignoreInset = NO;
-            _activity.alpha = 0;
-            _activity.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
-        } completion:^(BOOL finished) {
-            [_shapeLayer removeAllAnimations];
-            _shapeLayer.path = nil;
-            _shapeLayer.shadowPath = nil;
-            _shapeLayer.position = CGPointZero;
-            [_arrowLayer removeAllAnimations];
-            _arrowLayer.path = nil;
-            [_highlightLayer removeAllAnimations];
-            _highlightLayer.path = nil;
-            // We need to use the scrollView somehow in the end block,
-            // or it'll get released in the animation block.
-            _ignoreInset = YES;
-            [blockScrollView setContentInset:self.originalContentInset];
-            _ignoreInset = NO;
-        }];
+        
+        // default delay 0.5s show finished label;
+        // 默认延迟0.5s用来显示完成标签
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_finishedLabelShownInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:0.4 animations:^{
+                _ignoreInset = YES;
+                [blockScrollView setContentInset:self.originalContentInset];
+                _ignoreInset = NO;
+                
+                _finishedLabel.alpha = 0;
+            } completion:^(BOOL finished) {
+                [_shapeLayer removeAllAnimations];
+                _shapeLayer.path = nil;
+                _shapeLayer.shadowPath = nil;
+                _shapeLayer.position = CGPointZero;
+                [_arrowLayer removeAllAnimations];
+                _arrowLayer.path = nil;
+                [_highlightLayer removeAllAnimations];
+                _highlightLayer.path = nil;
+                // We need to use the scrollView somehow in the end block,
+                // or it'll get released in the animation block.
+                _ignoreInset = YES;
+                [blockScrollView setContentInset:self.originalContentInset];
+                _ignoreInset = NO;
+            }];
+        });
     }
 }
 

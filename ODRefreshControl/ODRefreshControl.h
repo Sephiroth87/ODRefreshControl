@@ -26,15 +26,18 @@
 }
 
 @property (nonatomic, readonly, getter=isRefreshing) BOOL refreshing;
+@property (nonatomic, assign) CGFloat finishedLabelShownInterval; // default 0.5s //默认0.5秒
 
 #ifdef __IPHONE_5_0
 @property (nonatomic, strong) UIColor *tintColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor *activityIndicatorViewColor UI_APPEARANCE_SELECTOR; // iOS5 or more
+@property (nonatomic, strong) UILabel *finishedLabel UI_APPEARANCE_SELECTOR;
 #else
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 @property (nonatomic, strong) UIColor *activityIndicatorViewColor; // iOS5 or more
+@property (nonatomic, strong) UILabel *finishedLabel;
 #endif
 
 - (id)initInScrollView:(UIScrollView *)scrollView;
