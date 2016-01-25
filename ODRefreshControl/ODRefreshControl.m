@@ -418,6 +418,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
         self.refreshing = YES;
         _canRefresh = NO;
+        [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
 }
 
