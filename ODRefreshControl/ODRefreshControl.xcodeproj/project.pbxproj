@@ -1,0 +1,229 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		92C682181649BD37000D1294 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C682171649BD37000D1294 /* Foundation.framework */; };
+		92C6822C1649BD80000D1294 /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C6822B1649BD80000D1294 /* ODRefreshControl.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		92C682121649BD37000D1294 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		92C682141649BD37000D1294 /* libODRefreshControl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libODRefreshControl.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		92C682171649BD37000D1294 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		92C6822A1649BD80000D1294 /* ODRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODRefreshControl.h; sourceTree = "<group>"; };
+		92C6822B1649BD80000D1294 /* ODRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRefreshControl.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		92C682111649BD37000D1294 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92C682181649BD37000D1294 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		92C682091649BD37000D1294 = {
+			isa = PBXGroup;
+			children = (
+				92C682291649BD78000D1294 /* Code */,
+				92C682161649BD37000D1294 /* Frameworks */,
+				92C682151649BD37000D1294 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		92C682151649BD37000D1294 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				92C682141649BD37000D1294 /* libODRefreshControl.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		92C682161649BD37000D1294 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				92C682171649BD37000D1294 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		92C682291649BD78000D1294 /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				92C6822B1649BD80000D1294 /* ODRefreshControl.m */,
+				92C6822A1649BD80000D1294 /* ODRefreshControl.h */,
+			);
+			name = Code;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		92C682131649BD37000D1294 /* ODRefreshControl */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92C682221649BD37000D1294 /* Build configuration list for PBXNativeTarget "ODRefreshControl" */;
+			buildPhases = (
+				92C682101649BD37000D1294 /* Sources */,
+				92C682111649BD37000D1294 /* Frameworks */,
+				92C682121649BD37000D1294 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ODRefreshControl;
+			productName = ODRefreshControl;
+			productReference = 92C682141649BD37000D1294 /* libODRefreshControl.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		92C6820B1649BD37000D1294 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+			};
+			buildConfigurationList = 92C6820E1649BD37000D1294 /* Build configuration list for PBXProject "ODRefreshControl" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 92C682091649BD37000D1294;
+			productRefGroup = 92C682151649BD37000D1294 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				92C682131649BD37000D1294 /* ODRefreshControl */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		92C682101649BD37000D1294 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92C6822C1649BD80000D1294 /* ODRefreshControl.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		92C682201649BD37000D1294 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		92C682211649BD37000D1294 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		92C682231649BD37000D1294 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/ODRefreshControl.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		92C682241649BD37000D1294 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/ODRefreshControl.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		92C6820E1649BD37000D1294 /* Build configuration list for PBXProject "ODRefreshControl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92C682201649BD37000D1294 /* Debug */,
+				92C682211649BD37000D1294 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92C682221649BD37000D1294 /* Build configuration list for PBXNativeTarget "ODRefreshControl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92C682231649BD37000D1294 /* Debug */,
+				92C682241649BD37000D1294 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 92C6820B1649BD37000D1294 /* Project object */;
+}

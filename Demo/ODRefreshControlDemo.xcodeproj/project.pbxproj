@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		92C682451649BE01000D1294 /* libODRefreshControl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C682371649BDBF000D1294 /* libODRefreshControl.a */; };
 		E5013A2115A43A940035F4A0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5013A2015A43A940035F4A0 /* UIKit.framework */; };
 		E5013A2315A43A940035F4A0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5013A2215A43A940035F4A0 /* Foundation.framework */; };
 		E5013A2515A43A940035F4A0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5013A2415A43A940035F4A0 /* CoreGraphics.framework */; };
@@ -15,10 +16,28 @@
 		E5013A3115A43A940035F4A0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E5013A3015A43A940035F4A0 /* AppDelegate.m */; };
 		E5013A3415A43A940035F4A0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5013A3315A43A940035F4A0 /* ViewController.m */; };
 		E5013A4515A43B8C0035F4A0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5013A4415A43B8C0035F4A0 /* QuartzCore.framework */; };
-		E5013A4A15A43BA60035F4A0 /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = E5013A4915A43BA60035F4A0 /* ODRefreshControl.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		92C682361649BDBF000D1294 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92C682321649BDBF000D1294 /* ODRefreshControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92C682141649BD37000D1294;
+			remoteInfo = ODRefreshControl;
+		};
+		92C682421649BDDA000D1294 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92C682321649BDBF000D1294 /* ODRefreshControl.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 92C682131649BD37000D1294;
+			remoteInfo = ODRefreshControl;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		92C682321649BDBF000D1294 /* ODRefreshControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ODRefreshControl.xcodeproj; path = ../../ODRefreshControl/ODRefreshControl.xcodeproj; sourceTree = "<group>"; };
+		92C682441649BDE3000D1294 /* ODRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = ODRefreshControl.h; path = ../../ODRefreshControl/ODRefreshControl.h; sourceTree = "<group>"; };
 		E5013A1C15A43A940035F4A0 /* ODRefreshControlDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ODRefreshControlDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5013A2015A43A940035F4A0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E5013A2215A43A940035F4A0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -32,8 +51,6 @@
 		E5013A3215A43A940035F4A0 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		E5013A3315A43A940035F4A0 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		E5013A4415A43B8C0035F4A0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		E5013A4815A43BA60035F4A0 /* ODRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODRefreshControl.h; sourceTree = "<group>"; };
-		E5013A4915A43BA60035F4A0 /* ODRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRefreshControl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92C682451649BE01000D1294 /* libODRefreshControl.a in Frameworks */,
 				E5013A4515A43B8C0035F4A0 /* QuartzCore.framework in Frameworks */,
 				E5013A2115A43A940035F4A0 /* UIKit.framework in Frameworks */,
 				E5013A2315A43A940035F4A0 /* Foundation.framework in Frameworks */,
@@ -51,6 +69,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		92C682331649BDBF000D1294 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				92C682371649BDBF000D1294 /* libODRefreshControl.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		E5013A1115A43A930035F4A0 = {
 			isa = PBXGroup;
 			children = (
@@ -94,23 +120,14 @@
 		E5013A2715A43A940035F4A0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				E5013A4715A43BA60035F4A0 /* ODRefreshControl */,
+				92C682441649BDE3000D1294 /* ODRefreshControl.h */,
+				92C682321649BDBF000D1294 /* ODRefreshControl.xcodeproj */,
 				E5013A2815A43A940035F4A0 /* ODRefreshControlDemo-Info.plist */,
 				E5013A2915A43A940035F4A0 /* InfoPlist.strings */,
 				E5013A2C15A43A940035F4A0 /* main.m */,
 				E5013A2E15A43A940035F4A0 /* ODRefreshControlDemo-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		E5013A4715A43BA60035F4A0 /* ODRefreshControl */ = {
-			isa = PBXGroup;
-			children = (
-				E5013A4815A43BA60035F4A0 /* ODRefreshControl.h */,
-				E5013A4915A43BA60035F4A0 /* ODRefreshControl.m */,
-			);
-			name = ODRefreshControl;
-			path = ../../ODRefreshControl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +144,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				92C682431649BDDA000D1294 /* PBXTargetDependency */,
 			);
 			name = ODRefreshControlDemo;
 			productName = ODRefreshControlDemo;
@@ -151,12 +169,28 @@
 			mainGroup = E5013A1115A43A930035F4A0;
 			productRefGroup = E5013A1D15A43A940035F4A0 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 92C682331649BDBF000D1294 /* Products */;
+					ProjectRef = 92C682321649BDBF000D1294 /* ODRefreshControl.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E5013A1B15A43A940035F4A0 /* ODRefreshControlDemo */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		92C682371649BDBF000D1294 /* libODRefreshControl.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libODRefreshControl.a;
+			remoteRef = 92C682361649BDBF000D1294 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E5013A1A15A43A940035F4A0 /* Resources */ = {
@@ -177,11 +211,18 @@
 				E5013A2D15A43A940035F4A0 /* main.m in Sources */,
 				E5013A3115A43A940035F4A0 /* AppDelegate.m in Sources */,
 				E5013A3415A43A940035F4A0 /* ViewController.m in Sources */,
-				E5013A4A15A43BA60035F4A0 /* ODRefreshControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		92C682431649BDDA000D1294 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ODRefreshControl;
+			targetProxy = 92C682421649BDDA000D1294 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E5013A2915A43A940035F4A0 /* InfoPlist.strings */ = {
