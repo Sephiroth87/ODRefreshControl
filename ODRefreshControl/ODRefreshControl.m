@@ -179,6 +179,10 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
 
     CGFloat offset = [[change objectForKey:@"new"] CGPointValue].y + self.originalContentInset.top;
     
+    if (_lastOffset == 0) {
+        _canRefresh = YES;
+    }
+
     if (_refreshing) {
         if (offset != 0) {
             // Keep thing pinned at the top
