@@ -39,6 +39,9 @@
 
 - (id)initInScrollView:(UIScrollView *)scrollView;
 
+// use custom frame
+- (id)initWithFrame:(CGRect)frame InScrollView:(UIScrollView *)scrollView;
+
 // use custom activity indicator
 - (id)initInScrollView:(UIScrollView *)scrollView activityIndicatorView:(UIView *)activity;
 
