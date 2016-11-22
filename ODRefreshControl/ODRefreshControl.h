@@ -33,6 +33,8 @@
 @property (nonatomic, strong) UIColor *activityIndicatorViewColor UI_APPEARANCE_SELECTOR; // iOS5 or more
 #else
 @property (nonatomic, strong) UIColor *tintColor;
+@property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic) BOOL showsBackground;
 @property (nonatomic, assign) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 @property (nonatomic, strong) UIColor *activityIndicatorViewColor; // iOS5 or more
 #endif
